@@ -5,6 +5,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import Home from "./pages/Dashboard/Dashboard.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./pages/Login/Login.jsx";
 import { LoginAction } from "./services/User.jsx";
 

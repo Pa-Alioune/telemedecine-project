@@ -1,20 +1,21 @@
 import { Alert } from "@mui/material";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, useActionData } from "react-router-dom";
 import { APP_ROUTES } from "../../utils/url";
 export default function Login() {
-  const error = useActionData();
-  if (error) {
-    return <Alert severity="error">{error} </Alert>;
-  }
+  const errors = useActionData();
   return (
     <main className="container form-signin w-100 m-auto">
       <Form method="POST" action={APP_ROUTES.LOGIN}>
         <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+        {errors && (
+          <Alert className="mb-2" severity="error">
+            {errors.message}{" "}
+          </Alert>
+        )}
 
         <div className="form-floating">
           <input
-            type="email"
+            type="text"
             className="form-control"
             id="floatingInput"
             name="email"
