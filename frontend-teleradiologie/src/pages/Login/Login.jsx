@@ -1,54 +1,116 @@
-import { Alert } from "@mui/material";
-import { Form, useActionData } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { useActionData, Form, useLocation, Navigate } from "react-router-dom";
 import { APP_ROUTES } from "../../utils/url";
+import useAuth from "../../hooks/useAuth";
+
 export default function Login() {
   const errors = useActionData();
-  return (
-    <main className="container form-signin w-100 m-auto">
-      <Form method="POST" action={APP_ROUTES.LOGIN}>
-        <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
-        {errors && (
-          <Alert className="mb-2" severity="error">
-            {errors.message}{" "}
-          </Alert>
-        )}
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || "/";
+  const { auth } = useAuth();
+  if (auth) {
+    return <Navigate to={APP_ROUTES.DASHBOARD} />;
+  }
 
-        <div className="form-floating">
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+        <Form method="POST" action={APP_ROUTES.LOGIN}>
+          {errors && (
+            <Alert className="my-3" severity="error">
+              {errors.message}{" "}
+            </Alert>
+          )}
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              {errors && errors.email ? (
+                <TextField
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  required
+                  error
+                  helperText={errors.email}
+                  autoComplete="email"
+                />
+              ) : (
+                <TextField
+                  fullWidth
+                  id="email"
+                  required
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              {errors && errors.password ? (
+                <TextField
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  required
+                  autoComplete="new-password"
+                  error
+                  helperText={errors.password}
+                />
+              ) : (
+                <TextField
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  required
+                />
+              )}
+            </Grid>
+          </Grid>
           <input
             type="text"
-            className="form-control"
-            id="floatingInput"
-            name="email"
-            placeholder="name@example.com"
+            hidden
+            name="path"
+            onChange={() => {}}
+            value={from}
           />
-          <label htmlFor="floatingInput">Email address</label>
-        </div>
-        <div className="form-floating">
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            id="floatingPassword"
-            placeholder="Password"
-          />
-          <label htmlFor="floatingPassword">Password</label>
-        </div>
-
-        <div className="form-check text-start my-3">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            value="remember-me"
-            id="flexCheckDefault"
-          />
-          <label className="form-check-label" htmlFor="flexCheckDefault">
-            Remember me
-          </label>
-        </div>
-        <button className="btn btn-primary w-100 py-2" type="submit">
-          Sign in
-        </button>
-      </Form>
-    </main>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign in
+          </Button>
+        </Form>
+      </Box>
+    </Container>
   );
 }

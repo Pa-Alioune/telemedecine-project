@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
-  const { store, clear } = useLocalStorage();
+  const { store, token, clear } = useLocalStorage();
   const login = (authData) => {
     setAuth(authData);
     store(authData);
@@ -15,6 +15,9 @@ export const AuthProvider = ({ children }) => {
     clear();
     setAuth({});
   };
+  useEffect(() => {
+    setAuth(token);
+  }, [token]);
 
   return (
     <AuthContext.Provider value={{ auth, login, logout }}>

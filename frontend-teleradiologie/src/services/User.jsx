@@ -1,14 +1,16 @@
+import { redirect } from "react-router-dom";
 import axios from "../utils/axios";
 import { API_ROUTES } from "../utils/url";
 import { isValidEmail } from "../utils/validate";
 
 export const LoginAction =
-  (auth, login) =>
+  (login) =>
   async ({ request }) => {
     const formData = await request.formData();
     let errors = {};
     let password = formData.get("password");
     let email = formData.get("email");
+    let path = formData.get("path");
     if (!password.trim()) {
       errors.password = "Mot de passe requis!";
     }
@@ -17,8 +19,9 @@ export const LoginAction =
     } else if (!isValidEmail(email)) {
       errors.email = "L'email que vous avez renseignez est invalid";
     }
-    if (Object.keys(errors).length > 0) {
+    if (Object.entries(errors).length) {
       errors.message = "Le formulaire est mal remplit";
+      console.log("errors");
       return errors;
     }
 
@@ -27,6 +30,7 @@ export const LoginAction =
       const res = response.data;
       const accessToken = res?.access;
       login(accessToken);
+      return redirect(path);
     } catch (err) {
       errors.message = err.response.data.detail;
       return errors;

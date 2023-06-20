@@ -6,7 +6,9 @@ export default function useLocalStorage() {
     return storedToken ? storedToken : null;
   });
   useEffect(() => {
-    localStorage.setItem("token", token);
+    if (token !== null) {
+      localStorage.setItem("token", token);
+    }
   }, [token]);
 
   const store = (myToken) => {
