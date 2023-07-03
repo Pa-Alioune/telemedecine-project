@@ -16,8 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework import routers
+from telemedecine.views import *
+
+router = routers.SimpleRouter()
+router.register('user', UserViewSet, basename='user')
+router.register('connected-user', UserConnectedViewSet,
+                basename='connected-user')
+router.register('hopital', HopitalViewSet,
+                basename='hopital')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/token', TokenObtainPairView.as_view(), name='obtain_tokens'),
+    path('api/token/refresh', TokenRefreshView.as_view(), name='refresh_token'),
+    path('api/', include(router.urls))
+
 ]
