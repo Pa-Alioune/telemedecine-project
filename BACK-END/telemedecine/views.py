@@ -42,3 +42,30 @@ class HopitalViewSet(MultipleSerializerMixin, ModelViewSet):
 
     def get_queryset(self):
         return Hopital.objects.all()
+
+
+class PatientViewSet(MultipleSerializerMixin, ModelViewSet):
+    serializer_class = PatientListSerializer
+    detail_serializer_class = PatientDetailSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Patient.objects.all()
+
+
+class Image_dicomViewSet(MultipleSerializerMixin, ModelViewSet):
+    serializer_class = Image_dicomListSerializer
+    detail_serializer_class = Image_dicomDetailSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Image_dicom.objects.all()
+
+
+class RapportViewSet(MultipleSerializerMixin, ModelViewSet):
+    serializer_class = RapportListSerializer
+    detail_serializer_class = RapportDetailSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Rapport.objects.all()
