@@ -29,10 +29,26 @@ export const LoginAction =
       const response = await axios.post(API_ROUTES.LOGIN, formData);
       const res = response.data;
       const accessToken = res?.access;
-      login(accessToken);
+      const refreshToken = res?.refresh;
+      login(accessToken, refreshToken);
       return redirect(path);
     } catch (err) {
-      errors.message = err.response.data.detail;
+      errors.message = "Login ou mot de passe incorrect";
       return errors;
+    }
+  };
+
+export const loadAcount =
+  (axiosPrivate, auth, tokenRefresh, logout) => async () => {
+    if (
+      auth !== undefined &&
+      auth !== null &&
+      tokenRefresh !== undefined &&
+      tokenRefresh !== null
+    ) {
+      const response = await axiosPrivate.get("/timeline");
+      return response?.data;
+    } else {
+      return logout();
     }
   };
