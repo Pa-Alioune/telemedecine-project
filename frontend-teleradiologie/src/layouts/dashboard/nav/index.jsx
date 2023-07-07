@@ -3,17 +3,8 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 // @mui
 import { styled, alpha } from "@mui/material/styles";
-import {
-  Box,
-  Link,
-  Button,
-  Drawer,
-  Typography,
-  Avatar,
-  Stack,
-} from "@mui/material";
+import { Box, Link, Drawer, Typography, Avatar, Stack } from "@mui/material";
 // mock
-import account from "../../../_mock/account";
 // hooks
 import useResponsive from "../../../hooks/useResponsive";
 // components
@@ -82,11 +73,11 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                {account.displayName}
+                {user?.first_name}
               </Typography>
 
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                {account.role}
+                {user?.type}
               </Typography>
             </Box>
           </StyledAccount>

@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LoginAction } from "./services/User.jsx";
+import { createPatient } from "./services/Patient.jsx";
 import { HelmetProvider } from "react-helmet-async";
 // routes
 // theme
@@ -22,9 +23,12 @@ import DashboardAppPage from "./pages/Dashboard/DashboardAppPage";
 import LoginPage from "./pages/LoginPage.jsx";
 import Page404 from "./pages/Page404";
 import UserPage from "./pages/UserPage.jsx";
+import Patient from "./pages/Patient.jsx";
+import useActionPrivate from "./hooks/useActionPrivate.jsx";
 
 function App() {
   const { login } = useAuth(AuthContext);
+  const axiosPrivate = useActionPrivate();
 
   // const axiosPrivate = useActionPrivate();
 
@@ -38,9 +42,15 @@ function App() {
           element={<LoginPage />}
         />
         <Route element={<RequireAuth />}>
-          <Route path={APP_ROUTES.DASHBOARD} element={<DashboardLayout />}>
-            <Route index element={<DashboardAppPage />} />
-            <Route path={APP_ROUTES.USERS} element={<UserPage />} />
+          <Route element={<DashboardLayout />}>
+            <Route path={APP_ROUTES.DASHBOARD} element={<DashboardAppPage />} />
+            <Route path={APP_ROUTES.PATIENTS} element={<UserPage />}>
+              <Route
+                action={createPatient(axiosPrivate)}
+                path={APP_ROUTES.PATIENTADD}
+                element={<Patient />}
+              />
+            </Route>
           </Route>
         </Route>
 

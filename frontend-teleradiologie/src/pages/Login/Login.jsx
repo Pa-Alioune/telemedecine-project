@@ -15,7 +15,7 @@ import useAuth from "../../hooks/useAuth";
 export default function Login() {
   const errors = useActionData();
   const location = useLocation();
-  const from = location?.state?.from?.pathname || "/";
+  const from = location?.state?.from?.pathname || APP_ROUTES.DASHBOARD;
   const { auth } = useAuth();
   if (auth) {
     return <Navigate to={APP_ROUTES.DASHBOARD} />;
@@ -46,25 +46,25 @@ export default function Login() {
           )}
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              {errors && errors.email ? (
+              {errors && errors.userName ? (
                 <TextField
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
+                  id="username"
+                  label="login"
+                  name="username"
                   required
                   error
-                  helperText={errors.email}
-                  autoComplete="email"
+                  autoComplete="username"
+                  helperText={errors.userName}
                 />
               ) : (
                 <TextField
                   fullWidth
-                  id="email"
+                  id="username"
                   required
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  label="login"
+                  name="username"
+                  autoComplete="username"
                 />
               )}
             </Grid>

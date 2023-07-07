@@ -1,23 +1,15 @@
 import { useState } from "react";
-import {
-  Form,
-  Navigate,
-  useActionData,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Form, Navigate, useActionData, useLocation } from "react-router-dom";
 // @mui
 import {
-  Link,
   Stack,
   IconButton,
   InputAdornment,
   TextField,
-  Checkbox,
   Alert,
   Button,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+// import { LoadingButton } from "@mui/lab";
 // components
 import Iconify from "../../../components/iconify";
 import { APP_ROUTES } from "../../../utils/url";
@@ -29,7 +21,7 @@ export default function LoginForm() {
   const errors = useActionData();
   const [showPassword, setShowPassword] = useState(false);
   const location = useLocation();
-  const from = location?.state?.from?.pathname || "/";
+  const from = location?.state?.from?.pathname || APP_ROUTES.DASHBOARD;
   const { auth } = useAuth();
   if (auth) {
     return <Navigate to={APP_ROUTES.DASHBOARD} />;
@@ -44,25 +36,25 @@ export default function LoginForm() {
       )}
       <Form method="POST" action={APP_ROUTES.LOGIN}>
         <Stack spacing={3}>
-          {errors && errors.email ? (
+          {errors && errors.username ? (
             <TextField
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
+              id="username"
+              label="Login"
+              name="username"
               required
               error
-              helperText={errors.email}
-              autoComplete="email"
+              helperText={errors.username}
+              autoComplete="username"
             />
           ) : (
             <TextField
               fullWidth
-              id="email"
+              id="username"
               required
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              label="Login"
+              name="username"
+              autoComplete="username"
             />
           )}
           {errors && errors.password ? (

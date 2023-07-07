@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
     useLocalStorage();
   const login = (accessToken, refreshToken) => {
     setAuth(accessToken);
-    console.log(accessToken);
     store(accessToken);
     setTokenRefresh(refreshToken);
   };
