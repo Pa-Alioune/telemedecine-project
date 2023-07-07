@@ -69,3 +69,12 @@ class RapportViewSet(MultipleSerializerMixin, ModelViewSet):
 
     def get_queryset(self):
         return Rapport.objects.all()
+
+
+class RadiologueViewSet(MultipleSerializerMixin, ModelViewSet):
+    serializer_class = UserListSerializer
+    detail_serializer_class = UserDetailSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return User.objects.filter(is_active=True, type="radiologue")

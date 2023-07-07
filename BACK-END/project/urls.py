@@ -34,6 +34,8 @@ router.register('image-dicom', Image_dicomViewSet,
                 basename='image-dicom')
 router.register('rapport', RapportViewSet,
                 basename='rapport')
+router.register('radiologue', RadiologueViewSet,
+                basename='radiologue')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
