@@ -40,6 +40,9 @@ export default function DashboardAppPage() {
   const axiosPrivate = useActionPrivate();
   const [medecins, setMedecins] = useState([]);
   const [patients, setPatients] = useState([]);
+  const [hopitals, setHopitals] = useState([]);
+  const [selectedHospitalId, setSelectedHospitalId] = useState(null);
+  const [filterMedecins, setFilterMedcins] = useState([]);
   useEffect(() => {
     axiosPrivate
       .get(API_URL + API_ROUTES.PATIENTS)
@@ -49,8 +52,38 @@ export default function DashboardAppPage() {
       .catch((err) => {
         console.log(err);
       });
+    axiosPrivate
+      .get(API_URL + API_ROUTES.HOPITAL)
+      .then((res) => {
+        setHopitals(res.data.results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    axiosPrivate
+      .get(API_URL + API_ROUTES.RADIOLOGUE)
+      .then((res) => {
+        setMedecins(res.data.results);
+        setFilterMedcins(res.data.results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [axiosPrivate]);
-
+  const handleChange = (event, value) => {
+    if (value) {
+      setSelectedHospitalId(value.id);
+    } else {
+      setSelectedHospitalId(null);
+    }
+  };
+  useEffect(() => {
+    if (selectedHospitalId !== null) {
+      setFilterMedcins(
+        medecins.filter((medecin) => medecin.hopital === selectedHospitalId)
+      );
+    }
+  }, [selectedHospitalId]);
   return (
     <>
       <Helmet>
@@ -90,7 +123,7 @@ export default function DashboardAppPage() {
                 padding: "30px",
               }}
             >
-              <Form method="POST">
+              <Form encType="multipart/form-data" method="POST">
                 <Autocomplete
                   id="patient"
                   options={patients}
@@ -99,26 +132,38 @@ export default function DashboardAppPage() {
                   }
                   sx={{ mb: 2 }}
                   renderInput={(params) => (
-                    <TextField {...params} label="Choisir un patient" />
+                    <TextField
+                      required
+                      name="patient"
+                      {...params}
+                      label="Choisir un patient"
+                    />
                   )}
                   fullWidth
                 />
+
                 <Autocomplete
                   id="medecin"
                   autoHighlight
-                  options={patients}
+                  options={filterMedecins}
                   getOptionLabel={(option) =>
                     option.first_name + " " + option.last_name
                   }
                   sx={{ mb: 2 }}
                   renderInput={(params) => (
-                    <TextField {...params} label="Choisir un medecin" />
+                    <TextField
+                      required
+                      name="destinataire"
+                      {...params}
+                      label="Choisir un medecin"
+                    />
                   )}
                   fullWidth
                 />
                 <TextField
                   type="file"
-                  equired
+                  required
+                  name="dicom"
                   variant="outlined"
                   fullWidth
                   sx={{
@@ -128,10 +173,6 @@ export default function DashboardAppPage() {
                     accept: ".DCM", // Specify the accepted file types
                   }}
                 />
-                {/* <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Label>Choisissez le DICOM file</Form.Label>
-                  <Form.Control type="file" />
-                </Form.Group> */}
                 <div>
                   <Button type="submit" color="primary" variant="contained">
                     Submit

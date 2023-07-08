@@ -5,6 +5,8 @@ export const API_ROUTES = {
   REGISTER : "/user",
   CONNECTEDUSER : "/connected-user/",
   PATIENTS : "/patient",
+  RADIOLOGUE:"/radiologue",
+  HOPITAL: "/hopital",
 }
 export const APP_ROUTES ={
   HOME : "/",
