@@ -32,6 +32,8 @@ router.register('patient', PatientViewSet,
                 basename='patient')
 router.register('image-dicom', Image_dicomViewSet,
                 basename='image-dicom')
+router.register('image-dicom-brut', DicomImageViewSet,
+                basename='image-dicom-brut')
 router.register('rapport', RapportViewSet,
                 basename='rapport')
 router.register('radiologue', RadiologueViewSet,
