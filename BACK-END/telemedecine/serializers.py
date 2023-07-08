@@ -47,22 +47,22 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     def get_images_envoyes(self, instance):
         queryset = instance.images_envoyes.all()
-        serializer = Image_dicomListSerializer(queryset, many=True)
+        serializer = Image_dicomDetailSerializer(queryset, many=True)
         return serializer.data
 
     def get_images_reçus(self, instance):
         queryset = instance.images_reçus.all()
-        serializer = Image_dicomListSerializer(queryset, many=True)
+        serializer = Image_dicomDetailSerializer(queryset, many=True)
         return serializer.data
 
     def get_rapports_envoyes(self, instance):
         queryset = instance.rapports_envoyes.all()
-        serializer = RapportListSerializer(queryset, many=True)
+        serializer = RapportDetailSerializer(queryset, many=True)
         return serializer.data
 
     def get_rapports_reçus(self, instance):
         queryset = instance.rapports_reçus.all()
-        serializer = RapportListSerializer(queryset, many=True)
+        serializer = RapportDetailSerializer(queryset, many=True)
         return serializer.data
 
 
