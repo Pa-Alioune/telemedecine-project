@@ -7,6 +7,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LoginAction } from "./services/User.jsx";
 import { createPatient } from "./services/Patient.jsx";
+import { sendImages } from "./services/dicom.jsx";
 import { HelmetProvider } from "react-helmet-async";
 // routes
 // theme
@@ -43,7 +44,11 @@ function App() {
         />
         <Route element={<RequireAuth />}>
           <Route element={<DashboardLayout />}>
-            <Route path={APP_ROUTES.DASHBOARD} element={<DashboardAppPage />} />
+            <Route
+              path={APP_ROUTES.DASHBOARD}
+              action={sendImages(axiosPrivate)}
+              element={<DashboardAppPage />}
+            />
             <Route path={APP_ROUTES.PATIENTS} element={<UserPage />}>
               <Route
                 action={createPatient(axiosPrivate)}
