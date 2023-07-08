@@ -7,7 +7,6 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LoginAction } from "./services/User.jsx";
 import { createPatient } from "./services/Patient.jsx";
-import { sendImages } from "./services/dicom.jsx";
 import { HelmetProvider } from "react-helmet-async";
 // routes
 // theme
@@ -26,6 +25,7 @@ import Page404 from "./pages/Page404";
 import UserPage from "./pages/UserPage.jsx";
 import Patient from "./pages/Patient.jsx";
 import useActionPrivate from "./hooks/useActionPrivate.jsx";
+import DicomSent from "./pages/DicomSent.jsx";
 
 function App() {
   const { login } = useAuth(AuthContext);
@@ -44,11 +44,7 @@ function App() {
         />
         <Route element={<RequireAuth />}>
           <Route element={<DashboardLayout />}>
-            <Route
-              path={APP_ROUTES.DASHBOARD}
-              action={sendImages(axiosPrivate)}
-              element={<DashboardAppPage />}
-            />
+            <Route path={APP_ROUTES.DASHBOARD} element={<DashboardAppPage />} />
             <Route path={APP_ROUTES.PATIENTS} element={<UserPage />}>
               <Route
                 action={createPatient(axiosPrivate)}
@@ -56,6 +52,7 @@ function App() {
                 element={<Patient />}
               />
             </Route>
+            <Route path={APP_ROUTES.DICOMS} element={<DicomSent />} />
           </Route>
         </Route>
 

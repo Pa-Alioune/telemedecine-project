@@ -11,7 +11,6 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Form } from "react-router-dom";
-import { APP_ROUTES } from "../utils/url";
 const Patient = () => {
   const [state, setState] = React.useState({
     checkedA: false,

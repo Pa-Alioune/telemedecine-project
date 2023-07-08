@@ -11,29 +11,12 @@ import {
   Button,
   CardContent,
   Box,
+  Alert,
 } from "@mui/material";
 import useConnected from "../../hooks/useConnected";
-import { Form } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { API_ROUTES, API_URL } from "../../utils/url";
 import useActionPrivate from "../../hooks/useActionPrivate";
-// components
-// import Iconify from "../../components/iconify";
-// // sections
-// import {
-//   AppTasks,
-//   AppNewsUpdate,
-//   AppOrderTimeline,
-//   AppCurrentVisits,
-//   AppWebsiteVisits,
-//   AppTrafficBySite,
-//   AppWidgetSummary,
-//   AppCurrentSubject,
-//   AppConversionRates,
-// } from "../../sections/@dashboard/app";
-
-// ----------------------------------------------------------------------
-
 export default function DashboardAppPage() {
   // const theme = useTheme();
   const user = useConnected();
@@ -43,6 +26,10 @@ export default function DashboardAppPage() {
   const [hopitals, setHopitals] = useState([]);
   const [selectedHospitalId, setSelectedHospitalId] = useState(null);
   const [filterMedecins, setFilterMedcins] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState("");
+  const [selectedMedecin, setSelectedMedecin] = useState("");
+  const [image, setImage] = useState(null);
+  const [success, setSuccess] = useState(false);
   useEffect(() => {
     axiosPrivate
       .get(API_URL + API_ROUTES.PATIENTS)
@@ -74,6 +61,7 @@ export default function DashboardAppPage() {
     if (value) {
       setSelectedHospitalId(value.id);
     } else {
+      setFilterMedcins(medecins);
       setSelectedHospitalId(null);
     }
   };
@@ -84,6 +72,47 @@ export default function DashboardAppPage() {
       );
     }
   }, [selectedHospitalId]);
+  const handlePatientChange = (event, value) => {
+    if (value) {
+      setSelectedPatient(value.id);
+    } else {
+      setSelectedPatient("");
+    }
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let formData = new FormData();
+    formData.append("patient", selectedPatient);
+    formData.append("destinataire", selectedMedecin);
+    formData.append("envoyeur", user.id);
+    formData.append("image", image);
+    axiosPrivate
+      .post(API_URL + API_ROUTES.DICOM + "/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(() => {
+        setSuccess(true);
+        setSelectedMedecin("");
+        setSelectedPatient("");
+        setImage(null);
+        event.target.reset();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleMedcinsChange = (event, value) => {
+    if (value) {
+      setSelectedMedecin(value.id);
+    } else {
+      setSelectedMedecin("");
+    }
+  };
+  const handleImageChange = (event) => {
+    setImage(event.target.files[0]);
+  };
   return (
     <>
       <Helmet>
@@ -93,6 +122,7 @@ export default function DashboardAppPage() {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Bonjour {user?.first_name + " " + user?.last_name}
         </Typography>
+        {success && <Alert severity="success">Image envoyer avec succés</Alert>}
         <Typography variant="h4" sx={{ mb: 5 }}>
           <Card
             variant="outlined"
@@ -114,7 +144,7 @@ export default function DashboardAppPage() {
                     fontWeight: "500",
                   }}
                 >
-                  Formulaire d'envoie d'images DICOM
+                  Formulaire d&apos;envoie d&apos;images DICOM
                 </Typography>
               </Box>
             </Box>
@@ -123,13 +153,18 @@ export default function DashboardAppPage() {
                 padding: "30px",
               }}
             >
-              <Form encType="multipart/form-data" method="POST">
+              <form
+                method="post"
+                encType="multipart/form-data"
+                onSubmit={handleSubmit}
+              >
                 <Autocomplete
                   id="patient"
                   options={patients}
                   getOptionLabel={(option) =>
                     option.first_name + " " + option.last_name
                   }
+                  onChange={handlePatientChange}
                   sx={{ mb: 2 }}
                   renderInput={(params) => (
                     <TextField
@@ -141,7 +176,17 @@ export default function DashboardAppPage() {
                   )}
                   fullWidth
                 />
-
+                <Autocomplete
+                  id="hopitale"
+                  options={hopitals}
+                  getOptionLabel={(option) => option.name}
+                  onChange={handleChange}
+                  sx={{ mb: 2 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Choisir un hôpital" />
+                  )}
+                  fullWidth
+                />
                 <Autocomplete
                   id="medecin"
                   autoHighlight
@@ -149,6 +194,7 @@ export default function DashboardAppPage() {
                   getOptionLabel={(option) =>
                     option.first_name + " " + option.last_name
                   }
+                  onChange={handleMedcinsChange}
                   sx={{ mb: 2 }}
                   renderInput={(params) => (
                     <TextField
@@ -165,6 +211,7 @@ export default function DashboardAppPage() {
                   required
                   name="dicom"
                   variant="outlined"
+                  onChange={handleImageChange}
                   fullWidth
                   sx={{
                     mb: 2,
@@ -178,7 +225,7 @@ export default function DashboardAppPage() {
                     Submit
                   </Button>
                 </div>
-              </Form>
+              </form>
             </CardContent>
           </Card>
         </Typography>
