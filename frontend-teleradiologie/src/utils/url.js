@@ -7,6 +7,7 @@ export const API_ROUTES = {
   PATIENTS : "/patient",
   RADIOLOGUE:"/radiologue",
   HOPITAL: "/hopital",
+  DICOM:"/image-dicom"
 }
 export const APP_ROUTES ={
   HOME : "/",
@@ -15,4 +16,5 @@ export const APP_ROUTES ={
   DASHBOARD : "/dashboard",
   PATIENTS : "/patients",
   PATIENTADD : "ajout",
+  DICOMS:"/dicoms",
 }
