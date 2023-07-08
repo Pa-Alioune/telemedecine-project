@@ -82,6 +82,8 @@ class Rapport(models.Model):
         User, on_delete=models.SET_NULL, related_name="rapports_reçus", null=True, blank=True)
     patient = models.ForeignKey(
         Patient, on_delete=models.CASCADE, related_name="rapports", null=True, blank=True)
+    image_dicom = models.OneToOneField(
+        Image_dicom, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='créé le')
     updated_at = models.DateTimeField(

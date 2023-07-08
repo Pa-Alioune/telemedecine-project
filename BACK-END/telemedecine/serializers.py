@@ -121,7 +121,8 @@ class Image_dicomListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image_dicom
         fields = ['id', 'id_image', 'patient',
-                  'envoyeur', 'destinataire']
+                  'envoyeur', 'destinataire', 'rapport']
+        extra_kwargs = {'rapport': {'read_only': True}}
 
 
 class Image_dicomDetailSerializer(serializers.ModelSerializer):
@@ -132,7 +133,8 @@ class Image_dicomDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image_dicom
         fields = ['id', 'id_image', 'patient',
-                  'envoyeur', 'destinataire']
+                  'envoyeur', 'destinataire', 'rapport']
+        extra_kwargs = {'rapport': {'read_only': True}}
 
     def get_patient(self, instance):
         queryset = instance.patient
@@ -153,18 +155,20 @@ class Image_dicomDetailSerializer(serializers.ModelSerializer):
 class RapportListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rapport
-        fields = ['id', 'fichier', 'envoyeur', 'destinataire', 'patient']
+        fields = ['id', 'fichier', 'envoyeur',
+                  'destinataire', 'patient', 'image_dicom']
 
 
 class RapportDetailSerializer(serializers.ModelSerializer):
     patient = serializers.SerializerMethodField()
     envoyeur = serializers.SerializerMethodField()
     destinataire = serializers.SerializerMethodField()
+    image_dicom = serializers.SerializerMethodField()
 
     class Meta:
         model = Rapport
         fields = ['id', 'fichier', 'patient',
-                  'envoyeur', 'destinataire']
+                  'envoyeur', 'destinataire', 'image_dicom']
 
     def get_patient(self, instance):
         queryset = instance.patient
@@ -179,4 +183,9 @@ class RapportDetailSerializer(serializers.ModelSerializer):
     def get_destinataire(self, instance):
         queryset = instance.destinataire
         serializer = UserListSerializer(queryset)
+        return serializer.data
+
+    def get_image_dicom(self, instance):
+        queryset = instance.image_dicom
+        serializer = Image_dicomListSerializer(queryset)
         return serializer.data
