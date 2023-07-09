@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        padding: 0%;
+        margin: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #faf5f5c5;
+    }
+
+    header {
+        padding: 20px;
+        margin: 20px;
+        margin-bottom: 0;
+    }
+
+    .site-name {
+        display: flex;
+        justify-content: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #8f8b8b1f;
+        color: #333333;
+        padding: 50px;
+    }
+
+    .nav ul {
+        background-color: #476dd8;
+        display: flex;
+        justify-content: center;
+        height: 50px;
+    }
+
+    .nav ul li {
+        display: flex;
+        justify-content: center;
+        text-decoration: none;
+        list-style-type: none;
+
+    }
+
+    .nav ul li:hover {
+        background-color: #faf5f5c5;
+    }
+
+    .nav ul li a {
+        text-decoration: none;
+        padding: 15px;
+        width: 100px;
+        margin-left: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 18px;
+    }
+
+    .nav ul li a:hover {
+        color: #333333;
+    }
+
+    .active {
+        background-color: #faf5f5c5;
+    }
+
+    .news {
+        margin: 20px 50px;
+        padding: 0 50px;
+        background-color: #fff;
+        border-radius: 10px;
+    }
+
+    .news:hover {
+        background-color: #8f8b8b1f;
+
+    }
+
+    .news-title {
+        display: flex;
+        align-items: center;
+    }
+
+    .news-title h2 {
+        padding: 20px 0;
+        width: 100%;
+        text-transform: capitalize;
+
+    }
+
+    .news-content {
+        text-justify: newspaper;
+        text-align: justify;
+
+    }
+</style>
+
+<body>
+    <header>
+        <div class="site-name">
+            <h1>Actualités Polytechniciennes</h1>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a class="active" href="#">Accueil</a></li>
+                <li><a href="#">Sport</a></li>
+                <li><a href="#">Santé</a></li>
+                <li><a href="#">Education</a></li>
+                <li><a href="#">Politique</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="news">
+            <div class="news-title">
+                <h2> un titre</h2>
+            </div>
+            <div class="news-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium, perspiciatis totam nobis, quos
+                sapiente error animi ullam corrupti fugiat esse, alias placeat minima beatae quam ad consequuntur
+                aliquam iste.
+            </div>
+        </div>
+        <div class="news">
+            <div class="news-title">
+                <h2> un titre</h2>
+            </div>
+            <div class="news-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium, perspiciatis totam nobis, quos
+                sapiente error animi ullam corrupti fugiat esse, alias placeat minima beatae quam ad consequuntur
+                aliquam iste.
+            </div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>
