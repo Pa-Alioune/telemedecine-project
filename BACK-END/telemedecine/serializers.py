@@ -129,6 +129,7 @@ class Image_dicomDetailSerializer(serializers.ModelSerializer):
     patient = serializers.SerializerMethodField()
     envoyeur = serializers.SerializerMethodField()
     destinataire = serializers.SerializerMethodField()
+    rapport = serializers.SerializerMethodField()
 
     class Meta:
         model = Image_dicom
@@ -149,6 +150,11 @@ class Image_dicomDetailSerializer(serializers.ModelSerializer):
     def get_destinataire(self, instance):
         queryset = instance.destinataire
         serializer = UserListSerializer(queryset)
+        return serializer.data
+
+    def get_rapport(self, instance):
+        queryset = instance.rapport
+        serializer = RapportListSerializer(queryset)
         return serializer.data
 
 
