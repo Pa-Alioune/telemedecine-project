@@ -59,6 +59,7 @@ class Patient(models.Model):
 
 class Image_dicom(models.Model):
     id_image = models.CharField(max_length=150)
+    parent_series = models.CharField(max_length=200)
     patient = models.ForeignKey(
         Patient, on_delete=models.CASCADE, related_name="images", null=True, blank=True)
     envoyeur = models.ForeignKey(

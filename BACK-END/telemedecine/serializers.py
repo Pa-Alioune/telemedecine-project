@@ -120,7 +120,7 @@ class PatientDetailSerializer(serializers.ModelSerializer):
 class Image_dicomListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image_dicom
-        fields = ['id', 'id_image', 'patient',
+        fields = ['id', 'id_image', 'parent_series', 'patient',
                   'envoyeur', 'destinataire', 'rapport']
         extra_kwargs = {'rapport': {'read_only': True}}
 
@@ -132,7 +132,7 @@ class Image_dicomDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image_dicom
-        fields = ['id', 'id_image', 'patient',
+        fields = ['id', 'id_image', 'parent_series', 'patient',
                   'envoyeur', 'destinataire', 'rapport']
         extra_kwargs = {'rapport': {'read_only': True}}
 

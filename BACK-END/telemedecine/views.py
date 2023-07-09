@@ -90,6 +90,7 @@ class Image_dicomViewSet(MultipleSerializerMixin, ModelViewSet):
         if response.status_code == 200:
             # Récupération de l'ID de l'image DICOM depuis la réponse du serveur Orthanc
             image_id = response.json().get('ID')
+            parent_series = response.json().get('ParentSeries')
             if not image_id:
                 return Response({'error': 'Impossible de récupérer l\'ID de l\'image DICOM.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -98,7 +99,7 @@ class Image_dicomViewSet(MultipleSerializerMixin, ModelViewSet):
             envoyeur = User.objects.get(id=envoyeur_id)
             destinataire = User.objects.get(id=destinataire_id)
             image_dicom = Image_dicom.objects.create(
-                id_image=image_id, patient=patient, envoyeur=envoyeur, destinataire=destinataire)
+                id_image=image_id, parent_series=parent_series, patient=patient, envoyeur=envoyeur, destinataire=destinataire)
             serializer = Image_dicomListSerializer(image_dicom)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
