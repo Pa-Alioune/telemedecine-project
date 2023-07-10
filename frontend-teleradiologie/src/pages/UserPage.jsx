@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { filter } from "lodash";
+import { filter, reverse } from "lodash";
 import { useEffect, useState, forwardRef } from "react";
 // @mui
 import {
@@ -33,7 +33,7 @@ import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import useActionPrivate from "../hooks/useActionPrivate";
 import { API_ROUTES, API_URL, APP_ROUTES } from "../utils/url";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +44,8 @@ const TABLE_HEAD = [
   { id: "role", label: "adresse", alignRight: false },
   { id: "isVerified", label: "sexe", alignRight: false },
   { id: "status", label: "Date de naissance", alignRight: false },
+  { id: "visuliser", label: "Visualiser", alignRight: false },
+
   { id: "" },
 ];
 
@@ -96,11 +98,12 @@ export default function UserPage() {
 
   const axiosPrivate = useActionPrivate();
   const [patients, setPatients] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     axiosPrivate
       .get(API_URL + API_ROUTES.PATIENTS)
       .then((res) => {
-        setPatients(res.data.results);
+        setPatients(reverse(res.data.results));
       })
       .catch((err) => {
         console.log(err);
@@ -154,6 +157,10 @@ export default function UserPage() {
     filterName
   );
   const isNotFound = !filteredUsers.length && !!filterName;
+  const handleRedirect = (event, patient) => {
+    navigate(APP_ROUTES.PATIENTS + "/" + patient.id);
+    event.stopPropagation();
+  };
   return (
     <>
       <Helmet>
@@ -233,6 +240,12 @@ export default function UserPage() {
                       <TableCell align="left">{patient?.sexe}</TableCell>
                       <TableCell align="left">
                         {patient?.date_de_naissance}
+                      </TableCell>
+                      <TableCell
+                        onClick={(event) => handleRedirect(event, patient)}
+                        align="left"
+                      >
+                        <Button variant="text">voir</Button>
                       </TableCell>
                     </TableRow>
                   );

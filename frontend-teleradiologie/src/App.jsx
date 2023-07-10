@@ -25,7 +25,12 @@ import Page404 from "./pages/Page404";
 import UserPage from "./pages/UserPage.jsx";
 import Patient from "./pages/Patient.jsx";
 import useActionPrivate from "./hooks/useActionPrivate.jsx";
-import DicomSent from "./pages/DicomSent.jsx";
+import DicomSent from "./pages/Dicom/DicomSent.jsx";
+import { OneDicomSent } from "./pages/Dicom/OneDicomSent.jsx";
+import DicomReceve from "./pages/Dicom/DicomReceve.jsx";
+import { OneDicomReceve } from "./pages/Dicom/OneDicomReceve.jsx";
+import DicomLayout from "./layouts/DicomLayout.jsx";
+import OnePatient from "./pages/OnePatient.jsx";
 
 function App() {
   const { login } = useAuth(AuthContext);
@@ -45,14 +50,23 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route element={<DashboardLayout />}>
             <Route path={APP_ROUTES.DASHBOARD} element={<DashboardAppPage />} />
-            <Route path={APP_ROUTES.PATIENTS} element={<UserPage />}>
+            <Route path={APP_ROUTES.PATIENTS} element={<DicomLayout />}>
+              <Route index element={<UserPage />} />
               <Route
                 action={createPatient(axiosPrivate)}
                 path={APP_ROUTES.PATIENTADD}
                 element={<Patient />}
               />
+              <Route path=":id" element={<OnePatient />} />
             </Route>
-            <Route path={APP_ROUTES.DICOMS} element={<DicomSent />} />
+            <Route path={APP_ROUTES.DICOMS}>
+              <Route index element={<DicomSent />} />
+              <Route path=":id" element={<OneDicomSent />} />
+            </Route>
+            <Route path={APP_ROUTES.DICOMSRECEVED}>
+              <Route index element={<DicomReceve />} />
+              <Route path=":id" element={<OneDicomReceve />} />
+            </Route>
           </Route>
         </Route>
 

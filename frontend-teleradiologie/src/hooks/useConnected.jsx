@@ -13,7 +13,7 @@ export default function useConnected() {
         setUser(res.data.user);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [privateaxios]);
 
   return user;
 }

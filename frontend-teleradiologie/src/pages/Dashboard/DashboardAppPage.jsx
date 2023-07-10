@@ -15,8 +15,10 @@ import {
 } from "@mui/material";
 import useConnected from "../../hooks/useConnected";
 import { useEffect, useState } from "react";
-import { API_ROUTES, API_URL } from "../../utils/url";
+import sleep from "../../utils/sleep";
+import { API_ROUTES, API_URL, APP_ROUTES } from "../../utils/url";
 import useActionPrivate from "../../hooks/useActionPrivate";
+import { useNavigate } from "react-router-dom";
 export default function DashboardAppPage() {
   // const theme = useTheme();
   const user = useConnected();
@@ -30,6 +32,7 @@ export default function DashboardAppPage() {
   const [selectedMedecin, setSelectedMedecin] = useState("");
   const [image, setImage] = useState(null);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     axiosPrivate
       .get(API_URL + API_ROUTES.PATIENTS)
@@ -86,6 +89,7 @@ export default function DashboardAppPage() {
     formData.append("destinataire", selectedMedecin);
     formData.append("envoyeur", user.id);
     formData.append("image", image);
+
     axiosPrivate
       .post(API_URL + API_ROUTES.DICOM + "/", formData, {
         headers: {
@@ -94,15 +98,24 @@ export default function DashboardAppPage() {
       })
       .then(() => {
         setSuccess(true);
+        scrollToTop();
         setSelectedMedecin("");
         setSelectedPatient("");
         setImage(null);
+        navigate(APP_ROUTES.DICOMS);
         event.target.reset();
+        sleep(300);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
   const handleMedcinsChange = (event, value) => {
     if (value) {
       setSelectedMedecin(value.id);
